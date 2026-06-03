@@ -1,0 +1,17 @@
+fastapi==0.136.3
+uvicorn==0.48.0
+sqlalchemy==2.0.50
+requests==2.34.2
+feedparser==6.0.12
+python-dotenv==1.2.2
+
+# AI Providers
+
+openai==2.40.0
+google-genai==2.7.0
+google-auth==2.53.0
+
+# Validation & Retry
+
+pydantic==2.13.4
+tenacity==9.1.4
