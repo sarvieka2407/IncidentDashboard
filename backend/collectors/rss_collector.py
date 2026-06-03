@@ -23,6 +23,26 @@ RSS_FEEDS = {
 }
 
 
+# fetch status from RSS : 
+def extract_status_from_rss(title: str, description: str) -> str:
+    """Extract status from RSS entry title and description"""
+    combined = f"{title} {description}".lower()
+    
+    # Check for Resolved
+    if any(word in combined for word in ['resolved', 'mitigated', 'fixed', 'back to normal']):
+        return "Resolved"
+    
+    # Check for Scheduled Maintenance
+    if any(word in combined for word in ['scheduled', 'maintenance', 'planned downtime', 'planned maintenance']):
+        return "Scheduled Maintenance"
+    
+    # Check for Work in Progress
+    if any(word in combined for word in ['investigating', 'identified', 'ongoing', 'monitoring', 'degraded', 'partial']):
+        return "Work in Progress"
+    
+    return "Work in Progress"  # Default to WIP
+
+
 # fetch_feed function: how to fetch function 
 
 def fetch_feed(company : str, url : str) -> list: 
@@ -40,6 +60,11 @@ def fetch_feed(company : str, url : str) -> list:
         incidents = []
 
         for entry in feed.entries: 
+
+            status = extract_status_from_rss(
+    entry.get("title", ""),
+    entry.get("summary", "")
+)
             incident = {
                 "company":     company,
                 "title":       entry.get("title", "No title"),
@@ -47,6 +72,7 @@ def fetch_feed(company : str, url : str) -> list:
                 "url":         entry.get("link", ""),
                 "published":   entry.get("published", str(datetime.now())),
                 "source":      "rss",
+                 "status":      status, 
             }
 
             incidents.append(incident)

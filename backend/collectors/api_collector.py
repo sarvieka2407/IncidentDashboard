@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 API_SOURCES = {
     "Atlassian":  "https://status.atlassian.com/api/v2/incidents.json",
     "PagerDuty":  "https://status.pagerduty.com/api/v2/incidents.json",
-    "Twilio":     "https://status.twilio.com/api/v2/incidents.json",
+    "Twlio":     "https://status.twilio.com/api/v2/incidents.json",
     "Sendgrid":   "https://status.sendgrid.com/api/v2/incidents.json",
     "Dropbox":    "https://status.dropbox.com/api/v2/incidents.json",
     "Intercom":   "https://www.intercomstatus.com/api/v2/incidents.json",
@@ -35,6 +35,16 @@ def fetch_api(company: str, url: str) -> list:
             updates = item.get("incident_updates", [])
             description = updates[0].get("body", "No description") if updates else "No description"
 
+            api_status = item.get("status", "investigating")  # investigating, identified, monitoring, resolved
+            
+            # Map API status to your 3 categories
+            if api_status == "resolved":
+                status = "Resolved"
+            elif "scheduled" in item.get("name", "").lower():
+                status = "Scheduled Maintenance"
+            else:
+                status = "Work in Progress"
+
             incident = {
                 "company":     company,
                 "title":       item.get("name", "No title"),
@@ -42,12 +52,13 @@ def fetch_api(company: str, url: str) -> list:
                 "url":         item.get("shortlink", ""),
                 "published":   item.get("created_at", str(datetime.now())),
                 "source":      "api",   # only difference — marks where it came from
+                "status":      status,  # Resolved, Scheduled Maintenance, Work in Progress
             }
  
             incidents.append(incident)
 
             logger.info(f"Found {len(incidents)} incidents for {company}")
-            return incidents
+        return incidents
 
     except requests.exceptions.Timeout:
         logger.error(f"Timeout fetching {company}: {url}")
