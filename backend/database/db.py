@@ -133,38 +133,55 @@ def save_incidents(incidents_data: list) -> int:
         count = 0
 
         for incident_data in incidents_data:
+            company = incident_data.get("company")
+            title = incident_data.get("title")
+            description = incident_data.get("description")
+            status = incident_data.get("status")
+            source = incident_data.get("source")
+            published = incident_data.get("published")
 
             # Check if this incident already exists
             existing = db.query(Incident).filter(
-                Incident.company == incident_data.get("company"),
-                Incident.title == incident_data.get("title")
+                Incident.company == company,
+                Incident.title == title
             ).first()
 
             if existing:
-                # Update latest information
-                existing.description = incident_data.get("description")
-                existing.status = incident_data.get("status")
-                existing.source = incident_data.get("source")
-                existing.published = incident_data.get("published")
+                # Update latest information only if changed
+                if existing.description != description:
+                    existing.description = description
+                    # TODO:
+                    # If description changes, invalidate cached AI summary.
+                    # summary = NULL
+                    # ai_processed = false
+
+                if existing.status != status:
+                    existing.status = status
+
+                if existing.source != source:
+                    existing.source = source
+
+                if existing.published != published:
+                    existing.published = published
 
                 count += 1
                 continue
 
             # New incident
             incident = Incident(
-                company=incident_data.get("company"),
-                title=incident_data.get("title"),
-                description=incident_data.get("description"),
+                company=company,
+                title=title,
+                description=description,
 
                 summary=incident_data.get("summary"),
                 severity=incident_data.get("severity"),
                 services=incident_data.get("services"),
                 region=incident_data.get("region"),
 
-                status=incident_data.get("status"),
-                source=incident_data.get("source"),
+                status=status,
+                source=source,
                 url=incident_data.get("url"),
-                published=incident_data.get("published"),
+                published=published,
 
                 ai_processed=incident_data.get("ai_processed", False),
             )

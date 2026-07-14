@@ -42,6 +42,20 @@ app.add_middleware(
 )
 
 
+def _sync_database():
+    rss_incidents = fetch_all_feeds()
+    api_incidents = fetch_all_apis()
+
+    all_incidents = rss_incidents + api_incidents
+
+    logger.info(f"Fetched {len(all_incidents)} incidents")
+
+    saved = save_incidents(all_incidents)
+
+    logger.info(f"Saved {saved} incidents to database")
+    return len(all_incidents), saved
+
+
 @app.get("/health")
 def health_check():
     return {
@@ -54,6 +68,13 @@ def health_check():
 def get_all_incidents_endpoint():
 
     incidents = get_all_incidents()
+
+    if not incidents:
+        logger.info("Database empty. Performing initial synchronization...")
+        fetched, saved = _sync_database()
+        logger.info("Synchronization complete.")
+        incidents = get_all_incidents()
+        logger.info(f"Database initialized with {len(incidents)} incidents.")
 
     return {
         "total": len(incidents),
@@ -99,19 +120,10 @@ def get_companies_endpoint():
 @app.get("/refresh")
 def refresh_incidents():
 
-    rss_incidents = fetch_all_feeds()
-    api_incidents = fetch_all_apis()
-
-    all_incidents = rss_incidents + api_incidents
-
-    logger.info(f"Fetched {len(all_incidents)} incidents")
-
-    saved = save_incidents(all_incidents)
-
-    logger.info(f"Saved {saved} incidents to database")
+    fetched, saved = _sync_database()
 
     return {
         "message": "Data refreshed successfully",
-        "fetched": len(all_incidents),
+        "fetched": fetched,
         "saved": saved
     }
