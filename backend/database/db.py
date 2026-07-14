@@ -10,6 +10,8 @@ from database.schema import Base, Incident
 # database file location
 # puts incidents.db in the same folder as main.py
 DATABASE_URL = "sqlite:///./incidents.db"
+print("Database path:", os.path.abspath("incidents.db"))
+
 
 # create_engine connects to the database
 # echo=True prints all SQL queries (useful for debugging)
@@ -112,42 +114,74 @@ def save_incident(incident_data: dict) -> Incident:
 # batch saves many incidents at once
 # more efficient than calling save_incident in a loop
 # ---------------------------------------------------------
+
 def save_incidents(incidents_data: list) -> int:
     """
-    Saves multiple incidents at once.
-    Returns the count of incidents saved.
+    Saves multiple incidents.
+
+    If an incident already exists (same company + title),
+    update it with the latest information.
+
+    Otherwise insert it as a new incident.
+
+    Returns the number of rows inserted or updated.
     """
+
     db = SessionLocal()
+
     try:
         count = 0
+
         for incident_data in incidents_data:
+
+            # Check if this incident already exists
+            existing = db.query(Incident).filter(
+                Incident.company == incident_data.get("company"),
+                Incident.title == incident_data.get("title")
+            ).first()
+
+            if existing:
+                # Update latest information
+                existing.description = incident_data.get("description")
+                existing.status = incident_data.get("status")
+                existing.source = incident_data.get("source")
+                existing.published = incident_data.get("published")
+
+                count += 1
+                continue
+
+            # New incident
             incident = Incident(
-                company      = incident_data.get("company"),
-                title        = incident_data.get("title"),
-                description  = incident_data.get("description"),
-                summary      = incident_data.get("summary"),
-                severity     = incident_data.get("severity"),
-                services     = incident_data.get("services"),
-                region       = incident_data.get("region"),
-                status       = incident_data.get("status"),
-                source       = incident_data.get("source"),
-                url          = incident_data.get("url"),
-                published    = incident_data.get("published"),
-                ai_processed = incident_data.get("ai_processed", "false"),
+                company=incident_data.get("company"),
+                title=incident_data.get("title"),
+                description=incident_data.get("description"),
+
+                summary=incident_data.get("summary"),
+                severity=incident_data.get("severity"),
+                services=incident_data.get("services"),
+                region=incident_data.get("region"),
+
+                status=incident_data.get("status"),
+                source=incident_data.get("source"),
+                url=incident_data.get("url"),
+                published=incident_data.get("published"),
+
+                ai_processed=incident_data.get("ai_processed", False),
             )
+
             db.add(incident)
             count += 1
-        
+
         db.commit()
         return count
-        
+
     except Exception as e:
         db.rollback()
         print(f"Error saving incidents: {e}")
         raise
+
     finally:
         db.close()
-
 
 # ---------------------------------------------------------
 # GET ALL INCIDENTS
@@ -162,6 +196,10 @@ def get_all_incidents() -> list:
         incidents = db.query(Incident)\
             .order_by(Incident.created_at.desc())\
             .all()
+        
+        print("SQLAlchemy count:", db.query(Incident).count())
+        print("Fetched rows:", len(incidents))
+        print("First IDs:", [i.id for i in incidents[:10]])
         
         # convert objects to dictionaries for JSON
         return [i.to_dict() for i in incidents]
