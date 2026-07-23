@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 
 import IncidentCard from "../components/IncidentCard";
+import ThemeToggle from "../components/ThemeToggle";
 import "./Dashboard.css";
 
 
@@ -16,7 +17,7 @@ import "./Dashboard.css";
 
 
 
-function Dashboard({ incidents, loading, error, lastUpdated, onRefresh, onCompanyClick, onSummaryUpdate }) {
+function Dashboard({ incidents, loading, error, lastUpdated, onRefresh, onCompanyClick, onSummaryUpdate, theme, onToggleTheme }) {
   const [sortBy, setSortBy] = useState("date");
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -118,6 +119,8 @@ const filteredIncidents = incidents
       <Bell size={18} />
     </button>
 
+    <ThemeToggle theme={theme} toggleTheme={onToggleTheme} />
+
   </div>
 
 </header>
@@ -190,8 +193,9 @@ const filteredIncidents = incidents
 
   <div className="incidents-toolbar">
 
-    <div className="recent-incidents-header">
-      RECENT INCIDENTS
+    <div className="incidents-header-group">
+      <h2 className="recent-incidents-title">Recent Incidents</h2>
+      <p className="recent-incidents-subtitle">Latest production incidents across all providers.</p>
     </div>
 
     <div className="incidents-controls">

@@ -1,5 +1,6 @@
 import React from "react";
 import { Search, RefreshCw, Bell } from "lucide-react";
+import ThemeToggle from "../components/ThemeToggle";
 import "./LiveStatus.css";
 
 function LiveStatus({
@@ -7,6 +8,8 @@ function LiveStatus({
   companies,
   loading,
   onCompanyClick,
+  theme,
+  onToggleTheme,
 }) {
   const formatDate = (dateStr) => {
     if (!dateStr) return "Never";
@@ -70,6 +73,8 @@ function LiveStatus({
           >
             <Bell size={18} />
           </button>
+
+          <ThemeToggle theme={theme} toggleTheme={onToggleTheme} />
 
         </div>
 

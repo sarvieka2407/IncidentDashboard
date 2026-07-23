@@ -64,12 +64,12 @@ function ProviderOrb({ company, angle, delay, radius = 88 }) {
         marginTop: -19,
         marginLeft: -19,
         borderRadius: "10px",
-        background: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.08)",
+        background: "#FFFCF8",
+        border: "1px solid #E6DFD3",
+        boxShadow: "0 1px 3px rgba(45,42,38,0.08)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backdropFilter: "blur(4px)",
       }}
       initial={{ x: startX, y: startY, opacity: 0, scale: 0.7 }}
       animate={[
@@ -152,14 +152,14 @@ export default function AiLoadingAnimation({ company }) {
             className="ai-center-core"
             animate={{
               boxShadow: [
-                "0 0 0px rgba(168,85,247,0.0)",
-                "0 0 18px rgba(168,85,247,0.25)",
-                "0 0 0px rgba(168,85,247,0.0)",
+                "0 0 0px rgba(143,130,165,0.0)",
+                "0 0 12px rgba(143,130,165,0.2)",
+                "0 0 0px rgba(143,130,165,0.0)",
               ],
             }}
             transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
           >
-            <Sparkles size={20} color="#c084fc" strokeWidth={1.75} />
+            <Sparkles size={20} color="#8F82A5" strokeWidth={1.75} />
           </motion.div>
         </motion.div>
       </div>

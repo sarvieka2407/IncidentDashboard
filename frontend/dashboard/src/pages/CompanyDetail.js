@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Search, RefreshCw, Bell } from "lucide-react";
+import ThemeToggle from "../components/ThemeToggle";
 import "./CompanyDetail.css";
 
 import githubLogo from "../assets/github.svg";
@@ -24,7 +25,7 @@ const COMPANY_LOGOS = {
   Intercom: intercomLogo,
 };
 
-function CompanyDetail({ company, incidents, onBack }) {
+function CompanyDetail({ company, incidents, onBack, theme, onToggleTheme }) {
 
   const cleanDescription = (html) => {
   if (!html) return "";
@@ -105,6 +106,8 @@ const [expandedIndex, setExpandedIndex] = useState(null);
           <button className="header-icon-btn">
             <Bell size={18} />
           </button>
+
+          <ThemeToggle theme={theme} toggleTheme={onToggleTheme} />
 
         </div>
       </header>

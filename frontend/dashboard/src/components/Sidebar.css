@@ -1,4 +1,4 @@
-/* ── Sidebar (Linear Style Refinement) ── */
+/* ── Sidebar (Warm Editorial Style) ── */
 .sidebar {
   width: 240px;
   background: var(--bg-sidebar);
@@ -36,6 +36,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(45, 42, 38, 0.04);
 }
 
 .sidebar-title {
@@ -70,7 +71,7 @@
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   flex: 1;
 }
 
@@ -82,7 +83,7 @@
   gap: 10px;
   padding: 8px 10px;
   border-radius: var(--radius-sm);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   cursor: pointer;
   font-size: 13.5px;
   font-weight: 500;
@@ -93,13 +94,15 @@
 }
 
 .nav-item:hover {
-  background: var(--bg-card);
-  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
 }
 
 .nav-item.active {
-  background: var(--bg-elevated);
+  background: var(--bg-card);
   color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 1px 3px rgba(45, 42, 38, 0.04);
 }
 
 .nav-icon {
@@ -135,6 +138,7 @@
   cursor: pointer;
   transition: all 0.15s ease;
   text-align: left;
+  box-shadow: 0 1px 2px rgba(45, 42, 38, 0.04);
 }
 
 .report-btn:hover {
@@ -158,7 +162,7 @@
 }
 
 .footer-item:hover {
-  background: var(--bg-card);
+  background: var(--bg-elevated);
   color: var(--text-secondary);
 }
 
@@ -175,7 +179,7 @@
 }
 
 .github-link:hover {
-  background: var(--bg-card);
+  background: var(--bg-elevated);
   color: var(--text-secondary);
 }
 

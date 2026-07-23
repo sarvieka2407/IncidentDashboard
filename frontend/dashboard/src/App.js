@@ -8,6 +8,21 @@ import "./App.css";
 
 const API_URL = "http://localhost:8000";
 
+/* ── Resolve initial theme ──────────────────────────────────
+   Priority order:
+   1. localStorage (persisted user preference)
+   2. OS / browser prefers-color-scheme
+   3. Default: "light"
+─────────────────────────────────────────────────────────── */
+function getInitialTheme() {
+  const stored = localStorage.getItem("theme");
+  if (stored === "light" || stored === "dark") return stored;
+  if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    return "dark";
+  }
+  return "light";
+}
+
 function App() {
   const [currentPage, setCurrentPage] = useState("dashboard");
   const [selectedCompany, setSelectedCompany] = useState(null);
@@ -17,6 +32,19 @@ function App() {
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
 
+  /* ── Theme ── */
+  const [theme, setTheme] = useState(getInitialTheme);
+
+  /* Apply data-theme to <html> whenever theme changes */
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () =>
+    setTheme((t) => (t === "light" ? "dark" : "light"));
+
+  /* ── Data fetching ── */
   useEffect(() => {
     fetchAllData();
   }, []);
@@ -79,6 +107,8 @@ function App() {
             onRefresh={handleRefresh}
             onCompanyClick={(company) => handleNavigation("detail", company)}
             onSummaryUpdate={updateIncidentSummary}
+            theme={theme}
+            onToggleTheme={toggleTheme}
           />
         )}
 
@@ -88,6 +118,8 @@ function App() {
             companies={companies}
             loading={loading}
             onCompanyClick={(company) => handleNavigation("detail", company)}
+            theme={theme}
+            onToggleTheme={toggleTheme}
           />
         )}
 
@@ -96,6 +128,8 @@ function App() {
             company={selectedCompany}
             incidents={incidents.filter(i => i.company === selectedCompany)}
             onBack={() => handleNavigation("status")}
+            theme={theme}
+            onToggleTheme={toggleTheme}
           />
         )}
       </main>
