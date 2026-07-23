@@ -14,7 +14,7 @@ import "./Dashboard.css";
 
 
 
-function Dashboard({ incidents, loading, error, lastUpdated, onRefresh, onCompanyClick }) {
+function Dashboard({ incidents, loading, error, lastUpdated, onRefresh, onCompanyClick, onSummaryUpdate }) {
   const [sortBy, setSortBy] = useState("date");
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -258,9 +258,10 @@ const filteredIncidents = incidents
           <div className="incidents-list">
             {filteredIncidents.map((incident, idx) => (
               <IncidentCard
-                key={idx}
+                key={incident.id ?? idx}
                 incident={incident}
                 onClick={() => onCompanyClick(incident.company)}
+                onSummaryUpdate={onSummaryUpdate}
               />
             ))}
           </div>

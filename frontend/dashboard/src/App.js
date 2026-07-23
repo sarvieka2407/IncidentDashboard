@@ -57,6 +57,14 @@ function App() {
     }
   };
 
+  const updateIncidentSummary = (incidentId, summary) => {
+    setIncidents((prev) =>
+      prev.map((inc) =>
+        inc.id === incidentId ? { ...inc, ai_summary: summary } : inc
+      )
+    );
+  };
+
   return (
     <div className="app">
       <Sidebar currentPage={currentPage} onNavigate={handleNavigation} />
@@ -70,6 +78,7 @@ function App() {
             lastUpdated={lastUpdated}
             onRefresh={handleRefresh}
             onCompanyClick={(company) => handleNavigation("detail", company)}
+            onSummaryUpdate={updateIncidentSummary}
           />
         )}
 

@@ -4,8 +4,10 @@ import os
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
 
 from collectors.rss_collector import fetch_all_feeds
 from collectors.api_collector import fetch_all_apis
@@ -14,7 +16,11 @@ from database.db import (
     save_incidents,
     get_all_incidents,
     get_companies,
+    get_db,
 )
+
+from database.schema import Incident
+from processors.ai_summarizer import summarize_single_incident
 
 logging.basicConfig(
     level=logging.INFO,
@@ -127,3 +133,51 @@ def refresh_incidents():
         "fetched": fetched,
         "saved": saved
     }
+
+
+@app.post("/incidents/{incident_id}/simplify")
+def simplify_incident(incident_id: int, db: Session = Depends(get_db)):
+    incident = db.query(Incident).filter(Incident.id == incident_id).first()
+    if not incident:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Incident with ID {incident_id} not found"
+        )
+
+    if incident.summary is not None:
+        logger.info(f"Returning cached summary for incident {incident_id}.")
+        return {
+            "id": incident.id,
+            "summary": incident.summary,
+            "cached": True
+        }
+
+    logger.info(f"Generating AI summary for incident {incident_id}...")
+    try:
+        summary_text = summarize_single_incident(
+            company=incident.company,
+            title=incident.title,
+            description=incident.description or ""
+        )
+
+
+    except Exception as e:
+        logger.error(f"Error generating AI summary for incident {incident_id}: {e}")
+        return JSONResponse(
+            status_code=503,
+            content={"error": "AI engine is currently unavailable. Please try again shortly."}
+        )
+
+    logger.info("AI summary generated successfully.")
+    
+    incident.summary = summary_text
+    incident.ai_processed = True
+    db.commit()
+
+    return {
+        "id": incident.id,
+        "summary": summary_text,
+        "cached": False
+    }
+
+

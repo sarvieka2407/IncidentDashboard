@@ -13,8 +13,8 @@ function Sidebar({ currentPage, onNavigate }) {
 
       <div className="sidebar-header">
 
-        <div className="sidebar-logo">
-          <Activity size={20} />
+        <div className="sidebar-logo" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Activity size={16} />
         </div>
 
         <div className="sidebar-title">
@@ -28,6 +28,8 @@ function Sidebar({ currentPage, onNavigate }) {
         </div>
 
       </div>
+
+      <div className="sidebar-divider" />
 
       <nav className="sidebar-nav">
 
