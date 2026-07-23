@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   RefreshCw,
   Bell,
   Search,
+  ChevronDown
 } from "lucide-react";
 
 import IncidentCard from "../components/IncidentCard";
@@ -200,55 +202,63 @@ const filteredIncidents = incidents
     className="filter-btn"
     onClick={() => setShowFilter(!showFilter)}
   >
-    {statusFilter}
-    
+    <span>{statusFilter}</span>
+    <ChevronDown size={14} className="filter-chevron" style={{ transform: showFilter ? 'rotate(180deg)' : 'rotate(0deg)' }} />
   </button>
 
-  {showFilter && (
-    <div className="filter-menu">
-
-      <div
-        className="filter-item"
-        onClick={() => {
-          setStatusFilter("All");
-          setShowFilter(false);
-        }}
+  <AnimatePresence>
+    {showFilter && (
+      <motion.div 
+        className="filter-menu"
+        initial={{ opacity: 0, y: -4, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: -4, scale: 0.98 }}
+        transition={{ duration: 0.12, ease: "easeOut" }}
       >
-        All Incidents
-      </div>
 
-      <div
-        className="filter-item"
-        onClick={() => {
-          setStatusFilter("Scheduled Maintenance");
-          setShowFilter(false);
-        }}
-      >
-        Scheduled Maintenance
-      </div>
+        <div
+          className="filter-item"
+          onClick={() => {
+            setStatusFilter("All");
+            setShowFilter(false);
+          }}
+        >
+          All Incidents
+        </div>
 
-      <div
-        className="filter-item"
-        onClick={() => {
-          setStatusFilter("Work in Progress");
-          setShowFilter(false);
-        }}
-      >
-        Work In Progress
-      </div>
+        <div
+          className="filter-item"
+          onClick={() => {
+            setStatusFilter("Scheduled Maintenance");
+            setShowFilter(false);
+          }}
+        >
+          Scheduled Maintenance
+        </div>
 
-      <div
-        className="filter-item"
-        onClick={() => {
-          setStatusFilter("Resolved");
-          setShowFilter(false);
-        }}
-      >
-        Resolved
-      </div>
+        <div
+          className="filter-item"
+          onClick={() => {
+            setStatusFilter("Work in Progress");
+            setShowFilter(false);
+          }}
+        >
+          Work In Progress
+        </div>
 
-    </div>
-  )}
+        <div
+          className="filter-item"
+          onClick={() => {
+            setStatusFilter("Resolved");
+            setShowFilter(false);
+          }}
+        >
+          Resolved
+        </div>
+
+      </motion.div>
+    )}
+  </AnimatePresence>
 
 </div>
     </div>

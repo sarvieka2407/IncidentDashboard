@@ -1,4 +1,4 @@
-/* ── Global Reset & Design Tokens ── */
+/* ── Global Reset & Design Tokens (Linear / Vercel Palette) ── */
 * {
   margin: 0;
   padding: 0;
@@ -6,48 +6,48 @@
 }
 
 :root {
-  /* Surface palette — layered charcoal, no pure black */
-  --bg-base:       #171717;
-  --bg-primary:    #1c1c1f;
-  --bg-secondary:  #232326;
-  --bg-card:       #26262a;
-  --bg-raised:     #2c2c30;
+  /* Surface palette — layered charcoal, quiet depth */
+  --bg-base:        #18181B;
+  --bg-sidebar:     #1D1D20;
+  --bg-navbar:      #202024;
+  --bg-card:        #26262A;
+  --bg-elevated:    #2D2D31;
 
-  /* Borders */
-  --border-subtle:  rgba(255, 255, 255, 0.06);
-  --border-default: rgba(255, 255, 255, 0.09);
-  --border-strong:  rgba(255, 255, 255, 0.13);
+  /* Borders — tonal separation, non-intrusive */
+  --border-subtle:  #2D2D31;
+  --border-default: #36363B;
+  --border-strong:  #44444A;
 
-  /* Text */
-  --text-primary:   #f0f0f0;
-  --text-secondary: #a0a0a8;
-  --text-tertiary:  #636370;
+  /* Typography Colors */
+  --text-primary:   #F5F5F5;
+  --text-secondary: #A1A1AA;
+  --text-muted:     #71717A;
 
-  /* Status — muted, recognisable */
-  --status-resolved:    #5fbf7a;   /* soft sage green  */
-  --status-monitoring:  #5b9cf6;   /* muted blue       */
-  --status-investing:   #9e82e8;   /* muted violet     */
-  --status-maintenance: #d4972a;   /* warm amber       */
-  --status-unknown:     #747480;   /* soft gray        */
+  /* Status Colors — Muted, Professional */
+  --status-resolved:      #52a373;   /* Muted Sage Green */
+  --status-monitoring:    #5b8def;   /* Muted Blue */
+  --status-investigating: #9575cd;   /* Dusty Violet */
+  --status-maintenance:   #d99b38;   /* Warm Amber */
+  --status-unknown:       #71717a;   /* Neutral Gray */
 
   /* Accent */
-  --accent-purple: #a78bfa;
+  --accent-purple: #9575cd;
 
-  /* Radius */
+  /* Corner Radii */
   --radius-sm:  6px;
-  --radius-md:  10px;
-  --radius-lg:  14px;
-  --radius-xl:  20px;
+  --radius-md:  8px;
+  --radius-lg:  12px;
+  --radius-xl:  16px;
 
-  /* Shadows */
-  --shadow-card: 0 1px 3px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.12);
-  --shadow-hover: 0 2px 8px rgba(0,0,0,0.24), 0 8px 28px rgba(0,0,0,0.18);
+  /* Subtle Shadows */
+  --shadow-card:  0 1px 2px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15);
+  --shadow-hover: 0 4px 12px rgba(0,0,0,0.25), 0 8px 24px rgba(0,0,0,0.2);
 }
 
 body {
   background-color: var(--bg-base);
   color: var(--text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -67,14 +67,14 @@ body {
   background: var(--bg-base);
 }
 
-/* ── Page Header ── */
+/* ── Top Navigation / Page Header ── */
 .page-header {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  padding: 12px 28px;
+  padding: 14px 32px;
   border-bottom: 1px solid var(--border-subtle);
-  background: var(--bg-primary);
+  background: var(--bg-navbar);
   position: sticky;
   top: 0;
   z-index: 40;
@@ -114,7 +114,7 @@ body {
 /* ── Search Bar ── */
 .search-wrapper {
   position: relative;
-  width: 520px;
+  width: 480px;
   display: flex;
   align-items: center;
 }
@@ -122,18 +122,18 @@ body {
 .search-icon {
   position: absolute;
   left: 14px;
-  color: var(--text-tertiary);
+  color: var(--text-muted);
   pointer-events: none;
 }
 
 .search-input {
   width: 100%;
   height: 38px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-default);
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   color: var(--text-primary);
-  font-size: 14px;
+  font-size: 13.5px;
   padding-left: 42px;
   padding-right: 16px;
   transition: border-color 0.15s ease, background 0.15s ease;
@@ -142,12 +142,12 @@ body {
 }
 
 .search-input::placeholder {
-  color: var(--text-tertiary);
+  color: var(--text-muted);
 }
 
 .search-input:focus {
-  border-color: var(--border-strong);
-  background: var(--bg-raised);
+  border-color: var(--border-default);
+  background: var(--bg-elevated);
 }
 
 /* ── Header Icon Buttons ── */
@@ -166,7 +166,7 @@ body {
 }
 
 .header-icon-btn:hover {
-  background: var(--bg-secondary);
+  background: var(--bg-elevated);
   border-color: var(--border-default);
   color: var(--text-primary);
 }
@@ -177,7 +177,7 @@ body {
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
-  background: var(--bg-secondary);
+  background: var(--bg-sidebar);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   color: var(--status-resolved);
@@ -196,10 +196,10 @@ body {
 .back-btn {
   background: none;
   border: none;
-  color: var(--text-tertiary);
+  color: var(--text-muted);
   font-size: 14px;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: color 0.15s ease;
 }
 
 .back-btn:hover {
