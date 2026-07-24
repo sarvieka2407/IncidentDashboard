@@ -1,0 +1,81 @@
+/* ── Skeleton Incident Card ── */
+.skeleton-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Shimmer Animation ── */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-bar,
+.skeleton-circle {
+  background: linear-gradient(
+    90deg,
+    var(--bg-elevated) 25%,
+    var(--border-subtle) 50%,
+    var(--bg-elevated) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+  opacity: 0.85;
+}
+
+.skeleton-circle {
+  border-radius: 50%;
+}
+
+.provider-logo-skeleton {
+  width: 28px;
+  height: 28px;
+}
+
+.skeleton-header-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skeleton-provider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.skeleton-body-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .skeleton-card {
+    padding: 16px 14px;
+  }
+
+  .skeleton-header-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .ai-button-skeleton {
+    width: 100% !important;
+  }
+}

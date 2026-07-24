@@ -43,9 +43,11 @@ function CompanyDetail({ company, incidents, onBack, theme, onToggleTheme }) {
 
 const [expandedIndex, setExpandedIndex] = useState(null);
 
-  const latestIncident = incidents?.[0];
+  const sortedIncidents = [...(incidents || [])].sort((a, b) => {
+    return new Date(b.published) - new Date(a.published);
+  });
 
-
+  const latestIncident = sortedIncidents[0];
 
   const getStatusColor = (severity) => {
     switch (severity) {
@@ -205,7 +207,8 @@ const [expandedIndex, setExpandedIndex] = useState(null);
             </div>
           </div>
 
-          <div className="stat-card">
+
+          {/* <div className="stat-card">
             <div className="stat-label">CRITICAL</div>
             <div className="stat-value">
               {
@@ -225,8 +228,8 @@ const [expandedIndex, setExpandedIndex] = useState(null);
                 ).length
               }
             </div>
-          </div>
-
+          </div> */}
+ 
           <div className="stat-card">
             <div className="stat-label">LATEST</div>
             <div className="stat-small">
@@ -249,7 +252,7 @@ const [expandedIndex, setExpandedIndex] = useState(null);
 
           <div className="timeline">
 
-            {incidents.map((incident, index) => (
+            {sortedIncidents.map((incident, index) => (
 
               <div
                 key={index}
