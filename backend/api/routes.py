@@ -13,6 +13,7 @@ from collectors.rss_collector import fetch_all_feeds
 from collectors.api_collector import fetch_all_apis
 
 from database.db import (
+    init_db,
     save_incidents,
     get_all_incidents,
     get_companies,
@@ -34,6 +35,10 @@ app = FastAPI(
     description="Aggregates tech incidents from RSS feeds and APIs",
     version="1.0.0"
 )
+
+@app.on_event("startup")
+def startup():
+    init_db()
 
 app.add_middleware(
     CORSMiddleware,
