@@ -1,317 +1,9 @@
+/* ── LiveStatus / Providers Page Styling ── */
 .live-status-page {
   display: flex;
   flex-direction: column;
-}
-
-/* TOP METRICS */
-.top-metrics {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  padding: 32px;
-  border-bottom: 1px solid #222222;
-}
-
-.metric-box {
-  background-color: #111111;
-  border: 1px solid #222222;
-  border-radius: 8px;
-  padding: 20px;
-}
-
-.metric-box .metric-label {
-  font-size: 11px;
-  color: #666666;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
-  font-weight: 600;
-}
-
-.metric-box .metric-value {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-
-.metric-box .metric-change {
-  font-size: 12px;
-  color: #34c759;
-}
-
-.metric-badge {
-  display: inline-block;
-  background-color: #0070F3;
-  color: #ffffff;
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-size: 10px;
-  font-weight: 600;
-  margin-top: 8px;
-}
-
-.metric-badge.critical {
-  background-color: #ff3333;
-}
-
-.metric-badge.forecast {
-  background-color: #8e8e93;
-}
-
-/* FILTERS */
-.filters {
-  display: flex;
-  gap: 12px;
-  padding: 20px 32px;
-  border-bottom: 1px solid #222222;
-  align-items: center;
-}
-
-.filter-select {
-  background-color: #1a1a1a;
-  border: 1px solid #333333;
-  color: #ffffff;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 13px;
-  cursor: pointer;
-  min-width: 180px;
-}
-
-.filter-select:focus {
-  outline: none;
-  border-color: #0070F3;
-}
-
-.view-toggle {
-  background: none;
-  border: 1px solid #333333;
-  color: #888888;
-  padding: 6px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.view-toggle:hover {
-  border-color: #444444;
-  color: #ffffff;
-}
-
-/* COMPANIES TABLE */
-.companies-table {
-  padding: 0 32px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-thead {
-  border-bottom: 2px solid #222222;
-}
-
-th {
-  text-align: left;
-  padding: 16px;
-  font-size: 11px;
-  color: #666666;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 600;
-}
-
-tbody tr {
-  border-bottom: 1px solid #1a1a1a;
-  transition: all 0.2s;
-}
-
-tbody tr:hover {
-  background-color: #1a1a1a;
-}
-
-tbody tr.status-healthy {
-  border-left: 3px solid #34c759;
-}
-
-tbody tr.status-warning {
-  border-left: 3px solid #ff9500;
-}
-
-tbody tr.status-critical {
-  border-left: 3px solid #ff3333;
-}
-
-td {
-  padding: 16px;
-  font-size: 13px;
-  color: #ffffff;
-}
-
-.company-cell {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.company-icon {
-  font-size: 20px;
-  flex-shrink: 0;
-}
-
-.company-info {
-  display: flex;
-  flex-direction: column;
-}
-
-
-.company-desc {
-  font-size: 11px;
-  color: #666666;
-  margin-top: 2px;
-}
-
-.status-cell {
-  display: flex;
-  align-items: center;
-}
-
-.status-badge {
-  font-size: 12px;
-  font-weight: 500;
-  color: #ffffff;
-}
-
-.status-cell.status-healthy .status-badge {
-  color: #34c759;
-}
-
-.status-cell.status-warning .status-badge {
-  color: #ff9500;
-}
-
-.status-cell.status-critical .status-badge {
-  color: #ff3333;
-}
-
-.reliability-cell {
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.performance-cell {
-  display: flex;
-  gap: 2px;
-}
-
-.perf-bars {
-  display: flex;
-  gap: 2px;
-}
-
-.bar {
-  font-size: 10px;
-}
-
-.bar.green {
-  color: #34c759;
-}
-
-.bar.gray {
-  color: #444444;
-}
-
-.incident-cell {
-  color: #888888;
-  font-size: 12px;
-}
-
-.action-cell {
-  text-align: right;
-}
-
-.details-btn {
-  background: none;
-  border: 1px solid #333333;
-  color: #0070F3;
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.details-btn:hover {
-  border-color: #0070F3;
-  background-color: #0070F322;
-}
-
-.loading-cell {
-  text-align: center;
-  padding: 40px;
-  color: #666666;
-}
-
-.end-message {
-  text-align: center;
-  padding: 40px;
-  color: #444444;
-  font-size: 13px;
-  border-top: 1px solid #222222;
-}
-
-@media (max-width: 1024px) {
-  .top-metrics {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  th, td {
-    padding: 12px;
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 768px) {
-  .top-metrics {
-    grid-template-columns: 1fr;
-    padding: 16px;
-  }
-
-  .filters {
-    padding: 12px 16px;
-    flex-wrap: wrap;
-  }
-
-  .companies-table {
-    padding: 0 16px;
-  }
-
-  table {
-    font-size: 12px;
-  }
-
-  th, td {
-    padding: 10px 6px;
-  }
-
-  .company-cell {
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .company-icon {
-    font-size: 16px;
-  }
-
-  .filter-select {
-    min-width: 100px;
-    font-size: 12px;
-  }
+  background: var(--bg-base);
+  min-height: 100vh;
 }
 
 .companies-page {
@@ -319,26 +11,31 @@ td {
 }
 
 .companies-hero {
-  margin-bottom: 40px;
+  margin-bottom: 36px;
 }
 
 .hero-label {
-  font-size: 16px;
-  letter-spacing: 2px;
-  color: #878787;
-  margin-bottom: 12px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
 .companies-hero h1 {
-  font-size: 42px;
+  font-size: 38px;
   font-weight: 700;
-  margin-bottom: 12px;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  letter-spacing: -0.03em;
 }
 
 .companies-hero p {
-  color: #888;
-  font-size: 16px;
-  max-width: 700px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  max-width: 650px;
+  line-height: 1.6;
 }
 
 .companies-grid {
@@ -347,89 +44,178 @@ td {
     auto-fill,
     minmax(280px, 1fr)
   );
-  gap: 20px;
-}
-
-
-
-.company-card:hover {
-  border-color: #333;
-  transform: translateY(-3px);
-}
-
-.company-card h3 {
-  font-size: 22px;
-  margin-bottom: 20px;
-}
-
-.company-card-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  color: #888;
-  margin-bottom: 20px;
+  gap: 16px;
 }
 
 .company-card {
-  min-height: 300px;
-
-  padding: 32px;
-
-  background: #0f0f0f;
-
-  border: 1px solid #222;
-  border-radius: 16px;
-
+  min-height: 250px;
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
-
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.2s ease,
+              border-color 0.2s ease,
+              box-shadow 0.2s ease;
+  box-shadow: var(--shadow-card);
+  position: relative;
 }
 
 .company-card:hover {
-  border-color: #333;
-  transform: translateY(-2px);
+  background: var(--bg-elevated);
+  border-color: var(--border-default);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Card Top Section: Logo beside Name, Status beneath */
+.card-top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.card-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-logo-wrapper {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+}
+
+.provider-logo-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: none;
+  opacity: 1;
+}
+
+.provider-logo-fallback {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text-secondary);
 }
 
 .company-name {
-  font-size: 24px;
+  font-size: 19px;
   font-weight: 700;
-
-  color: white;
-
-  margin-bottom: 24px;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
-.company-incidents {
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.status-dot-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Operational: muted green dot & text, clean background, no glow */
+.status-operational {
+  color: #2da44e;
+  background: rgba(45, 164, 78, 0.08);
+}
+.status-operational .status-dot-indicator {
+  background-color: #2da44e;
+  box-shadow: none;
+}
+
+/* Active Incident: amber dot with soft outer glow, amber-tinted pill, and slow pulse */
+.status-active {
+  color: #d97706;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+}
+.status-active .status-dot-indicator {
+  background-color: #f59e0b;
+  box-shadow: 0 0 7px rgba(245, 158, 11, 0.55);
+  animation: active-dot-pulse 2.5s infinite ease-in-out;
+}
+
+@keyframes active-dot-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 0 6px rgba(245, 158, 11, 0.45);
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.85;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.7);
+  }
+}
+
+/* Major Outage: muted red */
+.status-outage {
+  color: #cf222e;
+  background: rgba(207, 34, 46, 0.1);
+  border: 1px solid rgba(207, 34, 46, 0.2);
+}
+.status-outage .status-dot-indicator {
+  background-color: #cf222e;
+  box-shadow: none;
+}
+
+/* Metrics Row */
+.card-metrics-row {
   display: flex;
   align-items: baseline;
-  gap: 10px;
-
-  margin-bottom: 28px;
+  gap: 8px;
+  margin-bottom: 18px;
 }
 
 .incident-number {
-  font-size: 52px;
+  font-size: 34px;
   font-weight: 700;
-
   line-height: 1;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  transition: color 0.2s ease;
+}
 
-  color: #878787;
+/* Subtle amber tint on large incident number ONLY for active incident providers */
+.incident-count-active {
+  color: #d97706;
+}
+
+.incident-count-outage {
+  color: #cf222e;
 }
 
 .incident-label {
-  font-size: 13px;
-  letter-spacing: 0.15em;
-
-  color: #7f8694;
-}
-
-.company-divider {
-  height: 1px;
-  background: #1f1f1f;
-
-  margin-bottom: 24px;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
 }
 
 .company-meta {
@@ -437,23 +223,44 @@ td {
 }
 
 .meta-label {
-  color: #7f8694;
-  font-size: 14px;
-
-  margin-bottom: 8px;
+  color: var(--text-muted);
+  font-size: 11.5px;
+  margin-bottom: 2px;
 }
 
 .meta-value {
-  color: white;
-  font-size: 16px;
+  color: var(--text-secondary);
+  font-size: 13.5px;
   font-weight: 500;
 }
 
+/* CTA */
 .company-link {
-  margin-top: 32px;
-
-  color: #878787;
+  margin-top: 20px;
+  color: var(--text-secondary);
   font-weight: 600;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s ease;
+}
 
-  font-size: 15px;
+.cta-arrow {
+  display: inline-block;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.company-card:hover .company-link {
+  color: var(--text-primary);
+}
+
+.company-card:hover .cta-arrow {
+  transform: translateX(4px);
+}
+
+.loading-companies {
+  padding: 40px;
+  color: var(--text-muted);
+  font-size: 14px;
 }

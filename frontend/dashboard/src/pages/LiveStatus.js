@@ -1,13 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { Search, RefreshCw, Bell } from "lucide-react";
+import ThemeToggle from "../components/ThemeToggle";
 import "./LiveStatus.css";
+
+import githubLogo from "../assets/github.svg";
+import awsLogo from "../assets/aws.svg";
+import cloudflareLogo from "../assets/cloudflare.svg";
+import atlassianLogo from "../assets/atlassian.svg";
+import shopifyLogo from "../assets/shopify.svg";
+import pagerdutyLogo from "../assets/pagerduty.png";
+import datadogLogo from "../assets/datadog.svg";
+import dropboxLogo from "../assets/dropbox.svg";
+import intercomLogo from "../assets/intercom.svg";
+
+const COMPANY_LOGOS = {
+  GitHub: githubLogo,
+  AWS: awsLogo,
+  Cloudflare: cloudflareLogo,
+  Atlassian: atlassianLogo,
+  Shopify: shopifyLogo,
+  PagerDuty: pagerdutyLogo,
+  Datadog: datadogLogo,
+  Dropbox: dropboxLogo,
+  Intercom: intercomLogo,
+};
 
 function LiveStatus({
   incidents,
   companies,
   loading,
   onCompanyClick,
+  theme,
+  onToggleTheme,
 }) {
+  const [searchTerm, setSearchTerm] = useState("");
+
   const formatDate = (dateStr) => {
     if (!dateStr) return "Never";
 
@@ -20,6 +47,30 @@ function LiveStatus({
     if (days === 1) return "Yesterday";
 
     return `${days} days ago`;
+  };
+
+  const getCompanyStatus = (companyIncidents) => {
+    if (!companyIncidents || companyIncidents.length === 0) {
+      return { label: "Operational", type: "operational" };
+    }
+
+    const activeIncidents = companyIncidents.filter(
+      (i) => i.status && i.status.toLowerCase() !== "resolved"
+    );
+
+    if (activeIncidents.length === 0) {
+      return { label: "Operational", type: "operational" };
+    }
+
+    const hasCritical = activeIncidents.some(
+      (i) => i.severity && i.severity.toLowerCase() === "critical"
+    );
+
+    if (hasCritical) {
+      return { label: "Major Outage", type: "outage" };
+    }
+
+    return { label: "Active Incident", type: "active" };
   };
 
   return (
@@ -45,6 +96,8 @@ function LiveStatus({
               type="text"
               placeholder="Search companies..."
               className="search-input"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
 
           </div>
@@ -70,6 +123,8 @@ function LiveStatus({
           >
             <Bell size={18} />
           </button>
+
+          <ThemeToggle theme={theme} toggleTheme={onToggleTheme} />
 
         </div>
 
@@ -105,9 +160,23 @@ function LiveStatus({
               Loading companies...
             </div>
           ) : (
-            companies
-              .filter((c) => c !== "All")
-              .map((company) => {
+            (() => {
+              const filteredCompanies = companies
+                .filter((c) => c !== "All")
+                .filter((company) => 
+                  company.toLowerCase().includes(searchTerm.trim().toLowerCase())
+                );
+
+              if (filteredCompanies.length === 0) {
+                return (
+                  <div className="empty-state" style={{ gridColumn: "1 / -1", textAlign: "center", padding: "40px 0" }}>
+                    <p className="empty-emoji" style={{ fontSize: "2rem", marginBottom: "8px" }}>🔍</p>
+                    <p style={{ color: "var(--text-muted)" }}>No providers found.</p>
+                  </div>
+                );
+              }
+
+              return filteredCompanies.map((company) => {
                 const companyIncidents =
                   incidents.filter(
                     (i) => i.company === company
@@ -116,52 +185,61 @@ function LiveStatus({
                 const latest =
                   companyIncidents[0];
 
+                const status = getCompanyStatus(companyIncidents);
+
                 return (
-<div
-  key={company}
-  className="company-card"
-  onClick={() => onCompanyClick(company)}
->
+                  <div
+                    key={company}
+                    className="company-card"
+                    onClick={() => onCompanyClick(company)}
+                  >
+                    <div className="card-top">
+                      <div className="card-name-row">
+                        <div className="card-logo-wrapper">
+                          {COMPANY_LOGOS[company] ? (
+                            <img
+                              src={COMPANY_LOGOS[company]}
+                              alt={company}
+                              className="provider-logo-img"
+                            />
+                          ) : (
+                            <div className="provider-logo-fallback">
+                              {company.charAt(0)}
+                            </div>
+                          )}
+                        </div>
+                        <h3 className="company-name">{company}</h3>
+                      </div>
 
-  <h3 className="company-name">
-    {company}
-  </h3>
+                      <div className={`status-badge status-${status.type}`}>
+                        <span className="status-dot-indicator" />
+                        <span>{status.label}</span>
+                      </div>
+                    </div>
 
-  <div className="company-incidents">
+                    <div className="card-metrics-row">
+                      <span className={`incident-number incident-count-${status.type}`}>
+                        {companyIncidents.length}
+                      </span>
+                      <span className="incident-label">
+                        INCIDENTS RECORDED
+                      </span>
+                    </div>
 
-    <span className="incident-number">
-      {companyIncidents.length}
-    </span>
+                    <div className="company-meta">
+                      <div className="meta-label">Last Incident</div>
+                      <div className="meta-value">
+                        {latest ? formatDate(latest.published) : "Never"}
+                      </div>
+                    </div>
 
-    <span className="incident-label">
-      INCIDENTS
-    </span>
-
-  </div>
-
-  <div className="company-divider"></div>
-
-  <div className="company-meta">
-
-    <div className="meta-label">
-      Last incident
-    </div>
-
-    <div className="meta-value">
-      {latest
-        ? formatDate(latest.published)
-        : "Never"}
-    </div>
-
-  </div>
-
-  <div className="company-link">
-    View Details →
-  </div>
-
-</div>
+                    <div className="company-link">
+                      View History <span className="cta-arrow">→</span>
+                    </div>
+                  </div>
                 );
-              })
+              });
+            })()
           )}
 
         </div>

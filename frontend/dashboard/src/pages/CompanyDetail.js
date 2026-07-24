@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Search, RefreshCw, Bell } from "lucide-react";
+import ThemeToggle from "../components/ThemeToggle";
 import "./CompanyDetail.css";
 
 import githubLogo from "../assets/github.svg";
@@ -24,7 +25,7 @@ const COMPANY_LOGOS = {
   Intercom: intercomLogo,
 };
 
-function CompanyDetail({ company, incidents, onBack }) {
+function CompanyDetail({ company, incidents, onBack, theme, onToggleTheme }) {
 
   const cleanDescription = (html) => {
   if (!html) return "";
@@ -42,9 +43,11 @@ function CompanyDetail({ company, incidents, onBack }) {
 
 const [expandedIndex, setExpandedIndex] = useState(null);
 
-  const latestIncident = incidents?.[0];
+  const sortedIncidents = [...(incidents || [])].sort((a, b) => {
+    return new Date(b.published) - new Date(a.published);
+  });
 
-
+  const latestIncident = sortedIncidents[0];
 
   const getStatusColor = (severity) => {
     switch (severity) {
@@ -105,6 +108,8 @@ const [expandedIndex, setExpandedIndex] = useState(null);
           <button className="header-icon-btn">
             <Bell size={18} />
           </button>
+
+          <ThemeToggle theme={theme} toggleTheme={onToggleTheme} />
 
         </div>
       </header>
@@ -202,7 +207,8 @@ const [expandedIndex, setExpandedIndex] = useState(null);
             </div>
           </div>
 
-          <div className="stat-card">
+
+          {/* <div className="stat-card">
             <div className="stat-label">CRITICAL</div>
             <div className="stat-value">
               {
@@ -222,8 +228,8 @@ const [expandedIndex, setExpandedIndex] = useState(null);
                 ).length
               }
             </div>
-          </div>
-
+          </div> */}
+ 
           <div className="stat-card">
             <div className="stat-label">LATEST</div>
             <div className="stat-small">
@@ -246,7 +252,7 @@ const [expandedIndex, setExpandedIndex] = useState(null);
 
           <div className="timeline">
 
-            {incidents.map((incident, index) => (
+            {sortedIncidents.map((incident, index) => (
 
               <div
                 key={index}

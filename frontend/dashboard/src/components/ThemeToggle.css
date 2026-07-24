@@ -1,0 +1,70 @@
+/* ── Theme Toggle ── */
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-md);
+  /* Don't let global slow transition override this button */
+  transition: none;
+}
+
+.theme-toggle:hover {
+  background: var(--bg-elevated);
+}
+
+/* Sun / Moon icons */
+.toggle-sun,
+.toggle-moon {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: color 200ms ease, opacity 200ms ease;
+}
+
+.theme-toggle.is-light .toggle-sun {
+  color: var(--text-secondary);
+}
+
+.theme-toggle.is-dark .toggle-moon {
+  color: var(--text-secondary);
+}
+
+/* Track */
+.toggle-track {
+  width: 40px;
+  height: 22px;
+  background: var(--toggle-bg, var(--border-subtle));
+  border-radius: 999px;
+  border: 1px solid var(--border-default);
+  position: relative;
+  flex-shrink: 0;
+  /* Only transition the track background with the theme, not on hover */
+  transition: background-color 250ms ease, border-color 250ms ease;
+}
+
+/* Thumb */
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--toggle-thumb-bg, var(--bg-card));
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  /* Animate only the left offset for snappy thumb slide */
+  transition: left 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Light: thumb left */
+.theme-toggle.is-light .toggle-thumb {
+  left: 2px;
+}
+
+/* Dark: thumb right */
+.theme-toggle.is-dark .toggle-thumb {
+  left: 20px;
+}

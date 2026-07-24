@@ -20,7 +20,6 @@ class Incident(Base):
 
     description = Column(Text, nullable=True)
 
-    # AI-generated fields
     summary = Column(Text, nullable=True)
 
     severity = Column(String(50), nullable=True)
